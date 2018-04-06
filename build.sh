@@ -2,7 +2,7 @@ if [ ! -w "${GOPATH}" ]; then
 	echo "\$GOPATH must be set"
 	exit 1
 fi
-if [ ! "${GOPATH}/src/github.com/HearthSim/hs-proto-go" -ef "$(pwd)" ]; then
+if [ ! "${GOPATH}/src/github.com/vjurenka/hs-proto-go" -ef "$(pwd)" ]; then
 	echo "hs-proto-go should be in \$GOPATH"
 	exit 1
 fi
@@ -23,16 +23,16 @@ if [ ! -f "${HSPATH}/Assembly-CSharp-firstpass.dll" ]; then
 	exit 1
 fi
 if [ ! -r "${PROTOX}" ]; then
-	echo "\$PROTOX must be set to the binary of <https://github.com/HearthSim/proto-extractor>"
+	echo "\$PROTOX must be set to the binary of <https://github.com/vjurenka/proto-extractor>"
 	exit 1
 fi
 
-PROTO_OUT="${GOPATH}/src/github.com/HearthSim/hs-proto-go"
+PROTO_OUT="${GOPATH}/src/github.com/vjurenka/hs-proto-go"
 echo "Extracting .proto files to ${PROTO_OUT}"
 "${PROTOX}" -g "${PROTO_OUT}" \
 	"${HSPATH}"/Assembly-CSharp{,-firstpass}.dll
 cd "${GOPATH}/src"
-for i in github.com/HearthSim/hs-proto-go/{bnet,pegasus}/*/*.proto; do
+for i in github.com/vjurenka/hs-proto-go/{bnet,pegasus}/*/*.proto; do
 	echo "Building ${i}"
 	PATH="${GOPATH}/bin:${PATH}" protoc --go_out=. "${i}"
 done
